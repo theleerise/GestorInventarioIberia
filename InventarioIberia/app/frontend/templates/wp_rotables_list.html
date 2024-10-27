@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% from 'macro_rotables.jinja2' import macro_list_rotables_model %}
+{% set table_id = vargs.table_id %}
+{% set search_box = vargs.search_box %}
+
+{% block title %}
+    {{ type_rotable_tittle }}
+{% endblock %}
+
+{% block content %}
+
+{{macro_list_rotables_model(datadict, vargs)}}
+
+<script src="{{ url_for('static', filename='js/script_find_text_table.js') }}"></script>
+
+    <!-- Función JS para buscar valores dentro de la tabla -->
+    <script>
+        searchOnTable('{{search_box}}', '{{table_id}}');
+    </script>
+
+{% endblock %}

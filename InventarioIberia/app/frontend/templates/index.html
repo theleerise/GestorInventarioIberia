@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    INDEX
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Bienvenido a APP Gestion</h1>
+</div>
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card mx-2" style="width: 18rem;">
+        <img src="{{url_for('static', filename='img/herramientas.png')}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Herramientas</h5>
+          <p class="card-text">Pequeña descripcion.</p>
+          <a href="{{ url_for('herramientas.herramientas_list') }}" class="btn btn-primary">Acceso herramientas</a>
+        </div>
+    </div>
+    <div class="card mx-2" style="width: 18rem;">
+        <img src="{{url_for('static', filename='img/servicios-insumos.jpg')}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Consumibles</h5>
+          <p class="card-text">Pequeña descripcion.</p>
+          <a href="{{ url_for('consumibles.consumibles_list') }}" class="btn btn-primary">Acceso consumibles</a>
+        </div>
+    </div>
+    <div class="card mx-2" style="width: 18rem;">
+        <img src="{{url_for('static', filename='img/commercial-aircraft-repair-f.jpg')}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Rotables</h5>
+          <p class="card-text">Pequeña descripcion.</p>
+          <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rotablesModal">Acceso rotables</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Rotables -->
+<div class="modal fade" id="rotablesModal" tabindex="-1" aria-labelledby="rotablesModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="rotablesModalLabel">Rotables</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>Lista de distintos tipos de Rotables</h5>
+        <a href="{{ url_for('stocks.stocks_list') }}" class="btn btn-primary">Rotables Stock</a>
+        <a href="{{ url_for('ruedas.ruedas_list') }}" class="btn btn-primary">Rotables Ruedas</a>
+        <a href="{{ url_for('envios_mad.envios_mad_list') }}" class="btn btn-primary">Rotables Envios MAD</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
