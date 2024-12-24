@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% from 'macro_consumibles.jinja2' import macro_consumible_form_model %}
+
+{% block title %}
+    Consumibles - Form
+{% endblock %}
+
+{% block content %}
+
+{{ macro_consumible_form_model(consumible=consumible, action_url=url_for('consumibles.consumible_form', consumible_id=consumible.id if consumible else None)) }}
+
+{% endblock %}

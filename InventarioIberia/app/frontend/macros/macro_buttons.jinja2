@@ -1,0 +1,32 @@
+{% macro button_create_entity(url, title, id_botton) %}
+<a id="boton{{ id_botton }}" class="btn btn-primary mt-3" role="button"
+    title="{{ title }}"
+    alt="{{ title }}" 
+    href="{{ url_for(url) }}"
+    data-href="{{ url }}"
+    data-disable-loading="true">
+    <i class="bi bi-reply-all"></i> {{ title }}
+</a>
+{% endmacro %}
+
+{% macro button_edit_entity(url, id_entity, id_botton) %}
+<a id="boton{{ id_botton }}" class="btn btn-primary" role="button"
+    title="edit"
+    alt="edit" 
+    href="{{ url_for(url, id=id_entity) }}"
+    data-href="{{ url }}"
+    data-disable-loading="true">
+    <i class="bi bi-reply-all"></i> Edit
+</a>
+{% endmacro %}
+
+{% macro button_delete_entity(url, id_entity, id_botton) %}
+<a id="boton{{ id_botton }}" class="btn btn-primary" role="button"
+    title="edit"
+    alt="edit" 
+    href="{{ url_for(url, id=id_entity) }}"
+    data-href="{{ url }}"
+    data-disable-loading="true">
+    <i class="bi bi-reply-all"></i> Del
+</a>
+{% endmacro %}

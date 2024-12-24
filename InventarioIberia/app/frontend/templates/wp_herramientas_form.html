@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% from 'macro_herramientas.jinja2' import macro_form_herramientas_model %}
+
+{% block title %}
+    Herramientas - Formulario
+{% endblock %}
+
+{% block content %}
+    {{ macro_form_herramientas_model(herramienta=herramienta, action_url=url_for('herramientas.herramientas_form', id=herramienta.id if herramienta else None)) }}
+{% endblock %}
