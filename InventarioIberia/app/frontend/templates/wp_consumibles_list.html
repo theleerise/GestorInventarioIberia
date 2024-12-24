@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% from 'macro_consumibles.jinja2' import macro_list_consumibles_model %}
+{% from 'macro_buttons.jinja2' import button_create_entity %}
+
 {% set table_id = vargs.table_id %}
 {% set search_box = vargs.search_box %}
 
@@ -10,7 +12,11 @@
 
 {% block content %}
 
-{{macro_list_consumibles_model(datadict, vargs)}}
+<div class="container mt-3 mb-3">
+    {{ button_create_entity(form_url, "Crear Consumible", "crear_consumible_button") }}
+</div>
+
+{{macro_list_consumibles_model(datadict, vargs, form_url, del_url)}}
 
 <script src="{{ url_for('static', filename='js/script_find_text_table.js') }}"></script>
 

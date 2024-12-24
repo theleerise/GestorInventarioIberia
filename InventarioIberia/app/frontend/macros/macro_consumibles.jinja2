@@ -1,4 +1,7 @@
-{% macro macro_list_consumibles_model(datadict, vargs) %}
+{% from 'macro_buttons.jinja2' import button_edit_entity %}
+{% from 'macro_buttons.jinja2' import button_delete_entity %}
+
+{% macro macro_list_consumibles_model(datadict, vargs, form_url=none, delete_url=none) %}
 
 <div class="container">
     <div class="card">
@@ -21,10 +24,12 @@
                   <th>{{vargs.quantity}}</th>
                   <th>{{vargs.type_quantity }}</th>
                   <th>{{vargs.expiration}}</th>
+                  <th>Actions</th>
               </thead>
               <tbody>
                   {% for data in datadict %}
-                  
+                  {% set id_edit_button = "edit_consumible_" + data.id|string %}
+                  {% set id_del_button = "del_consumible_" + data.id|string %}
                   <tr>
                     <td class="text-center">{{ data.id }}</td>
                     <td>{{ data.ata }}</td>
@@ -34,6 +39,16 @@
                     <td>{{ data.quantity }}</td>
                     <td>{{ data.type_quantity }}</td>
                     <td>{{ data.expiration }}</td>
+                    <td>
+                        <div class="d-flex mx-1">
+                            <div class="mx-1">
+                                {{ button_edit_entity(form_url, data.id, id_edit_button) }}
+                            </div>
+                            <div class="mx-1">
+                                {{ button_delete_entity(delete_url, data.id, id_del_button) }}
+                            </div>
+                        </div>
+                    </td>
                   </tr>
                   {# Tambien se puede acceder de esta manera pero no es recomendable #}
                   {#
@@ -57,3 +72,79 @@
   <script src="{{url_for('static', filename='js/script_find_text_table.js')}}"></script>
     
 {% endmacro %}
+
+
+{% macro macro_consumible_form_model(consumible=None, action_url=None) %}
+<form action="{{ action_url }}" method="post" class="needs-validation" novalidate>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col col-md-4 mb-3">
+            <label for="ata" class="form-label">ATA:</label>
+            <input type="number" id="ata" name="ata" class="form-control"
+                  value="{{ consumible.ata if consumible else '' }}" 
+                  placeholder="Ingrese el ATA" required>
+        </div>
+        
+        <div class="col col-md-4 mb-3">
+            <label for="part_num" class="form-label">Part Number:</label>
+            <input type="text" id="part_num" name="part_num" class="form-control" 
+                  value="{{ consumible.part_num if consumible else '' }}" 
+                  placeholder="Ingrese el Part Number" required>
+        </div>
+        
+        <div class="col col-md-4 mb-3">
+            <label for="serial_num" class="form-label">Serial Number:</label>
+            <input type="text" id="serial_num" name="serial_num" class="form-control"
+                  value="{{ consumible.serial_num if consumible else '' }}" 
+                  placeholder="Ingrese el Serial Number" required>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripción:</label>
+            <textarea id="description" name="description" class="form-control"
+                    placeholder="Ingrese una descripción">{{ consumible.description if consumible else '' }}</textarea>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col col-md-4 mb-3">
+            <label for="quantity" class="form-label">Cantidad:</label>
+            <input type="number" id="quantity" name="quantity" class="form-control"
+                value="{{ consumible.quantity if consumible else '' }}" 
+                placeholder="Ingrese la cantidad">
+        </div>
+        
+        <div class="col col-md-4 mb-3">
+            <label for="type_quantity" class="form-label">Tipo de Cantidad:</label>
+            <input type="text" id="type_quantity" name="type_quantity" class="form-control"
+                value="{{ consumible.type_quantity if consumible else '' }}" 
+                placeholder="Ingrese el tipo de cantidad">
+        </div>
+        
+        <div class="col col-md-4 mb-3">
+            <label for="expiration" class="form-label">Fecha de Expiración:</label>
+            <input type="text" id="expiration" name="expiration" class="form-control"
+                value="{{ consumible.expiration if consumible else '' }}" 
+                placeholder="DD/MM/YYYY" required>
+        </div>
+    </div>
+    
+    <div class="d-grid">
+        <button type="submit" class="btn btn-primary">
+            {{ 'Actualizar' if consumible else 'Crear' }}
+        </button>
+    </div>
+
+</div>
+</form>
+{% endmacro %}
+
+
+
+
+

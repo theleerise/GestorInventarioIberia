@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% from 'macro_ruedas.jinja2' import macro_form_ruedas_model with context %}
+
+{% block title %}
+    {{ type_rotable_tittle }}
+{% endblock %}
+
+{% block content %}
+    {{ macro_form_ruedas_model(rotable=rotable, action_url=url_for('ruedas.ruedas_form', id=rotable.id if rotable else None)) }}
+{% endblock %}

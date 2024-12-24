@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% from 'macro_envios_mad.jinja2' import macro_list_envios_mad_model with context %}
+{% from 'macro_buttons.jinja2' import button_create_entity with context %}
+
+{% set table_id = vargs.table_id %}
+{% set search_box = vargs.search_box %}
+{% set title_button = "Crear " + type_rotable_tittle %}
+{% set id_button = "crear_" + type_rotable_tittle + "_button" %}
+
+{% block title %}
+    {{ type_rotable_tittle }} - Form
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3 mb-3">
+    {{ button_create_entity(form_url, title_button, id_button) }}
+</div>
+
+{{ macro_list_envios_mad_model(datadict, vargs, form_url, del_url) }}
+
+<script src="{{ url_for('static', filename='js/script_find_text_table.js') }}"></script>
+
+<script>
+    searchOnTable('{{ search_box }}', '{{ table_id }}');
+</script>
+
+{% endblock %}
