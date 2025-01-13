@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1>Bienvenido a APP Gestion</h1>
+<div class="container mt-5 d-flex justify-content-center">
+    <h1>Bienvenido a APP Gestión de Aeroservices 3000</h1>
 </div>
 
 <div class="container mt-5 d-flex justify-content-center">
@@ -14,7 +14,7 @@
         <img src="{{url_for('static', filename='img/herramientas.png')}}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Herramientas</h5>
-          <p class="card-text">Pequeña descripcion.</p>
+          <p class="card-text">Listado de Herramientas.</p>
           <a href="{{ url_for('herramientas.herramientas_list') }}" class="btn btn-primary">Acceso herramientas</a>
         </div>
     </div>
@@ -22,7 +22,7 @@
         <img src="{{url_for('static', filename='img/servicios-insumos.jpg')}}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Consumibles</h5>
-          <p class="card-text">Pequeña descripcion.</p>
+          <p class="card-text">Listado de Consumibles.</p>
           <a href="{{ url_for('consumibles.consumibles_list') }}" class="btn btn-primary">Acceso consumibles</a>
         </div>
     </div>
@@ -30,7 +30,7 @@
         <img src="{{url_for('static', filename='img/commercial-aircraft-repair-f.jpg')}}" class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Rotables</h5>
-          <p class="card-text">Pequeña descripcion.</p>
+          <p class="card-text">Listados de tipos de rotables.</p>
           <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#rotablesModal">Acceso rotables</a>
         </div>
     </div>

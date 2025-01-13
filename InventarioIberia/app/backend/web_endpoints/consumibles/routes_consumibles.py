@@ -1,24 +1,23 @@
-from flask import Blueprint, render_template, jsonify, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from ....backend.managers.consumibles.MgrdbConsumibles import MgrdbConsumibles
 from ....backend.models.consumibles import Consumible, ConsumibleVARGS
 
-
-bp = Blueprint('consumibles', __name__,  url_prefix='/consumibles')
+bp = Blueprint('consumibles', __name__, url_prefix='/consumibles')
 
 @bp.route('/consumibles_list', methods=['GET'])
 def consumibles_list():
-    
+    """
+    Lista todos los consumibles y los muestra en una tabla.
+    """
     mgr = MgrdbConsumibles()
-    
     all_list = mgr.get_all()
 
     # Convertir cada objeto Consumible a un diccionario usando to_dict()
     consumibles_dict = [consumible.to_dict() for consumible in all_list]
-    
+
     datadict = consumibles_dict
-    # print(datadict)
     
-    # Cargamos la VARGS
+    # Cargar las variables de configuración de la tabla (VARGS)
     vargs = ConsumibleVARGS()
     vargs.table_name = "Lista de Consumibles"
     vargs.table_id = "table_consumibles"
@@ -33,7 +32,7 @@ def consumibles_list():
 @bp.route('/consumibles_delete/<string:id>', methods=['POST', 'GET'])
 def consumibles_delete(id):
     """
-    Elimina un registro de consumibles basado en su ID.
+    Elimina un consumible basado en su ID.
     
     :param id: ID del consumible a eliminar.
     :return: Redirige a la lista de consumibles con un mensaje de éxito o error.
@@ -54,22 +53,22 @@ def consumibles_delete(id):
     # Redirigir a la lista de consumibles
     return redirect(url_for('consumibles.consumibles_list'))
 
-
 @bp.route("/consumibles_form/<string:id>", methods=["GET", "POST"])
-@bp.route('/consumibles_form', methods=['GET', 'POST'])
+@bp.route('/consumibles_form', defaults={'id': None}, methods=['GET', 'POST'])
 def consumible_form(id=None):
     """
     Maneja la creación y edición de registros de consumibles.
 
-    :param consumible_id: ID del consumible a editar. Si es None, se creará un nuevo registro.
+    :param id: ID del consumible a editar. Si es None, se creará un nuevo registro.
     :return: Renderiza el formulario para crear/editar consumibles.
     """
-    consumible = None
-
-    # Inicializar el manager de consumibles
     manager = MgrdbConsumibles()
 
-    # Si se pasa un ID, buscamos el registro existente
+    # Si el ID no viene en la URL, intentar obtenerlo del formulario
+    if not id:
+        id = request.form.get('id')
+
+    consumible = None
     if id:
         consumible = manager.get_by_id(id)
         if not consumible:
@@ -91,38 +90,42 @@ def consumible_form(id=None):
             flash('ATA, Part Number, Serial Number y Expiration son obligatorios.', 'error')
             return render_template('wp_consumibles_form.html', consumible=consumible)
 
-        # Crear o actualizar el objeto Consumibles
-        if consumible:
-            # Actualizar
-            consumible['ata'] = int(ata)
-            consumible['part_num'] = part_num
-            consumible['serial_num'] = serial_num
-            consumible['description'] = description
-            consumible['quantity'] = int(quantity) if quantity else None
-            consumible['type_quantity'] = type_quantity
-            consumible['expiration'] = expiration
-            manager.update(consumible)
-            flash('Consumible actualizado con éxito.', 'success')
-        else:
-            # Obtener el máximo ID actual directamente desde la base de datos
-            new_id = manager.get_next_id()
-            
-            # Crear nuevo
-            nuevo_consumible = {
-                #'id': new_id,
-                'ata': int(ata),
-                'part_num': part_num,
-                'serial_num': serial_num,
-                'description': description,
-                'quantity': int(quantity) if quantity else None,
-                'type_quantity': type_quantity,
-                'expiration': expiration
-            }
-            manager.create(**nuevo_consumible)
-            flash('Consumible creado con éxito.', 'success')
+        try:
+            quantity = int(quantity) if quantity else None
+            ata = int(ata)
 
-        # Guardar cambios en la base de datos
-        return redirect(url_for("consumibles.consumibles_list"))
+            if consumible:
+                # Actualizar el consumible existente
+                manager.update(
+                    consumible,
+                    ata=ata,
+                    part_num=part_num,
+                    serial_num=serial_num,
+                    description=description,
+                    quantity=quantity,
+                    type_quantity=type_quantity,
+                    expiration=expiration
+                )
+                flash('Consumible actualizado con éxito.', 'success')
+            else:
+                # Crear nuevo consumible
+                nuevo_consumible = {
+                    'ata': ata,
+                    'part_num': part_num,
+                    'serial_num': serial_num,
+                    'description': description,
+                    'quantity': quantity,
+                    'type_quantity': type_quantity,
+                    'expiration': expiration
+                }
+                manager.create(**nuevo_consumible)
+                flash('Consumible creado con éxito.', 'success')
+
+            # Redirigir a la lista de consumibles
+            return redirect(url_for("consumibles.consumibles_list"))
+
+        except ValueError:
+            flash('Error en los datos ingresados. Verifique que los campos numéricos sean válidos.', 'error')
+            return render_template('wp_consumibles_form.html', consumible=consumible)
 
     return render_template('wp_consumibles_form.html', consumible=consumible)
-

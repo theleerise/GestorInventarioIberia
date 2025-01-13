@@ -79,6 +79,9 @@
 
 <div class="container">
 
+    <!-- Campo oculto para el ID -->
+    <input type="hidden" name="id" value="{{ consumible.id if consumible else '' }}">
+
     <div class="row">
         <div class="col col-md-4 mb-3">
             <label for="ata" class="form-label">ATA:</label>
@@ -143,8 +146,5 @@
 </div>
 </form>
 {% endmacro %}
-
-
-
 
 
