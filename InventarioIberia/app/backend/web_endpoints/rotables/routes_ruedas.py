@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from ....backend.managers.rotables.MgrdbRotablesRuedas import MgrdbRotablesRueda
 from ....backend.models.rotables import Rueda, RotableVARGS
+from app.backend.web_endpoints.auth import login_required, role_required
+
 
 bp = Blueprint('ruedas', __name__, url_prefix='/ruedas')
 
 @bp.route('/ruedas_list', methods=['GET'])
+@login_required
+@role_required("USER")
 def ruedas_list():
     """
     Lista todas las ruedas y las muestra en una tabla.
@@ -29,6 +33,8 @@ def ruedas_list():
     )
 
 @bp.route('/ruedas_delete/<string:id>', methods=['POST', 'GET'])
+@login_required
+@role_required("USER")
 def ruedas_delete(id):
     """
     Elimina una rueda basada en su ID.
@@ -48,6 +54,8 @@ def ruedas_delete(id):
 
 @bp.route('/ruedas_form/<string:id>', methods=['GET', 'POST'])
 @bp.route('/ruedas_form', methods=['GET', 'POST'])
+@login_required
+@role_required("USER")
 def ruedas_form(id=None):
     """
     Maneja la creación y edición de registros de ruedas.

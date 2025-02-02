@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from ....backend.managers.consumibles.MgrdbConsumibles import MgrdbConsumibles
 from ....backend.models.consumibles import Consumible, ConsumibleVARGS
+from app.backend.web_endpoints.auth import login_required, role_required
+
 
 bp = Blueprint('consumibles', __name__, url_prefix='/consumibles')
 
 @bp.route('/consumibles_list', methods=['GET'])
+@login_required
+@role_required("USER")
 def consumibles_list():
     """
     Lista todos los consumibles y los muestra en una tabla.
@@ -30,6 +34,8 @@ def consumibles_list():
                            del_url="consumibles.consumibles_delete")
 
 @bp.route('/consumibles_delete/<string:id>', methods=['POST', 'GET'])
+@login_required
+@role_required("USER")
 def consumibles_delete(id):
     """
     Elimina un consumible basado en su ID.
@@ -55,6 +61,8 @@ def consumibles_delete(id):
 
 @bp.route("/consumibles_form/<string:id>", methods=["GET", "POST"])
 @bp.route('/consumibles_form', defaults={'id': None}, methods=['GET', 'POST'])
+@login_required
+@role_required("USER")
 def consumible_form(id=None):
     """
     Maneja la creación y edición de registros de consumibles.

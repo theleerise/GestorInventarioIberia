@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from ....backend.managers.rotables.MgrdbRotablesEnvioMAD import MgrdbRotablesEnvioMAD
 from ....backend.models.rotables import EnvioMAD, RotableVARGS
+from app.backend.web_endpoints.auth import login_required, role_required
+
 
 bp = Blueprint('envios_mad', __name__, url_prefix='/envios_mad')
 
 @bp.route('/envios_mad_list', methods=['GET'])
+@login_required
+@role_required("USER")
 def envios_mad_list():
     """
     Lista todos los envíos a MAD y los muestra en una tabla.
@@ -29,6 +33,8 @@ def envios_mad_list():
     )
 
 @bp.route('/envios_mad_delete/<string:id>', methods=['POST', 'GET'])
+@login_required
+@role_required("USER")
 def envios_mad_delete(id):
     """
     Elimina un envío a MAD basado en su ID.
@@ -48,6 +54,8 @@ def envios_mad_delete(id):
 
 @bp.route('/envios_mad_form/<string:id>', methods=['GET', 'POST'])
 @bp.route('/envios_mad_form', methods=['GET', 'POST'])
+@login_required
+@role_required("USER")
 def envios_mad_form(id=None):
     """
     Maneja la creación y edición de registros de envíos a MAD.

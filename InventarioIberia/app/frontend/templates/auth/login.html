@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% from "auth/macro_auth.jinja2" import auth_form %}
+
+{% block title %}
+    Iniciar Sesión
+{% endblock %}
+
+{% block content %}
+    {{ auth_form(url_for('auth.login'), "Iniciar Sesión", "Ingresar", error) }}
+    <div class="text-center mt-3">
+        <p>¿No tienes una cuenta? <a href="{{ url_for('auth.register') }}">Regístrate aquí</a></p>
+    </div>
+{% endblock %}
