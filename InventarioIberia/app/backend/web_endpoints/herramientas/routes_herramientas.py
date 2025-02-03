@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from ....backend.managers.herramientas.MgrdbHerramientas import MgrdbHerramientas
 from ....backend.models.herramientas import Herramienta, HerramientasVARGS
+from app.backend.web_endpoints.auth import login_required, role_required
+
 
 bp = Blueprint('herramientas', __name__, url_prefix='/herramientas')
 
 @bp.route('/herramientas_list', methods=['GET'])
+@login_required
+@role_required("USER")
 def herramientas_list():
     """
     Lista todas las herramientas y las muestra en una tabla.
@@ -30,6 +34,8 @@ def herramientas_list():
                            del_url="herramientas.herramientas_delete")
 
 @bp.route('/herramientas_delete/<string:id>', methods=['POST', 'GET'])
+@login_required
+@role_required("USER")
 def herramientas_delete(id):
     """
     Elimina una herramienta basada en su ID.
@@ -56,6 +62,8 @@ def herramientas_delete(id):
 
 @bp.route("/herramientas_form/<string:id>", methods=["GET", "POST"])
 @bp.route('/herramientas_form', methods=['GET', 'POST'])
+@login_required
+@role_required("USER")
 def herramientas_form(id=None):
     """
     Maneja la creación y edición de registros de herramientas.

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% from "admin_users/macro_admin_users.jinja2" import macro_list_usuarios %}
+
+{% block title %}
+    Usuarios
+{% endblock %}
+
+{% block content %}
+    {{ macro_list_usuarios(datadict, vargs, "usuarios.usuarios_form", "usuarios.usuarios_delete") }}
+{% endblock %}

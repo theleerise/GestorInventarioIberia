@@ -1,10 +1,14 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from ....backend.managers.rotables.MgrdbRotablesStock import MgrdbRotablesStock
 from ....backend.models.rotables import Stock, RotableVARGS
+from app.backend.web_endpoints.auth import login_required, role_required
+
 
 bp = Blueprint('stocks', __name__, url_prefix='/stocks')
 
 @bp.route('/stocks_list', methods=['GET'])
+@login_required
+@role_required("USER")
 def stocks_list():
     """
     Lista todos los stocks y los muestra en una tabla.
@@ -29,6 +33,8 @@ def stocks_list():
     )
 
 @bp.route('/stocks_delete/<string:id>', methods=['POST', 'GET'])
+@login_required
+@role_required("USER")
 def stocks_delete(id):
     """
     Elimina un stock basado en su ID.
@@ -48,6 +54,8 @@ def stocks_delete(id):
 
 @bp.route('/stocks_form/<string:id>', methods=['GET', 'POST'])
 @bp.route('/stocks_form', methods=['GET', 'POST'])
+@login_required
+@role_required("USER")
 def stocks_form(id=None):
     """
     Maneja la creación y edición de registros de stocks.

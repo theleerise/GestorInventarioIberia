@@ -37,6 +37,21 @@
                     </li>
                 </ul>
             </div>
+
+            <div id="session_div" class="d-flex">
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Usuario
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{{ url_for('usuarios.usuarios_list') }}">Lista Usuarios</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('auth.login') }}">Iniciar Sesión</a></li>
+                        <li><a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+            
         </div>
     </nav>
     

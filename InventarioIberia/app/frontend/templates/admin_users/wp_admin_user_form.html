@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% from "admin_users/macro_admin_users.jinja2" import macro_form_usuarios %}
+
+{% block title %}
+    Usuarios - Form
+{% endblock %}
+
+{% block content %}
+    {{ macro_form_usuarios(usuario, url_for("usuarios.usuarios_form", id=usuario.id) if usuario else url_for("usuarios.usuarios_form")) }}
+{% endblock %}

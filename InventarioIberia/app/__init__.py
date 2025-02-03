@@ -5,6 +5,8 @@ from jinja2 import ChoiceLoader, FileSystemLoader
 
 import os
 
+# from app.backend.web_endpoints.auth import login_required
+
 # Configuraciones generales de la base de datos y la app
 db_uri = 'sqlite:///database_app.db'  # URI de la base de datos SQLite
 secret_key = 'dev'  # Clave secreta de desarrollo
@@ -58,6 +60,10 @@ def create_app():
         from app.backend.models.consumibles import Consumible  # Importa el modelo aquí
         from app.backend.models.herramientas import Herramienta
         from app.backend.models.rotables import Rueda, Stock, EnvioMAD
+        
+        # Autenticación de usuarios
+        from app.backend.models.users import Users
+        
         db.create_all()  # Crear las tablas
 
     # Importar los Blueprints después de inicializar la base de datos portable (db)
@@ -65,14 +71,25 @@ def create_app():
     from app.backend.web_endpoints.herramientas import routes_herramientas
     from app.backend.web_endpoints.rotables import routes_ruedas, routes_stock, routes_envioMAD
     
+    # Seguridad de la aplicación
+    from app.backend.web_endpoints import auth
+    from app.backend.web_endpoints import admin_users
+    
     app.register_blueprint(routes_consumibles.bp)
     app.register_blueprint(routes_herramientas.bp)
     app.register_blueprint(routes_ruedas.bp)
     app.register_blueprint(routes_stock.bp)
     app.register_blueprint(routes_envioMAD.bp)
+    
+    # Seguridad de la aplicación
+    app.register_blueprint(auth.bp)
+    app.register_blueprint(admin_users.bp)
+    
+    from app.backend.web_endpoints.auth import login_required
 
     # Definición de la ruta principal
     @app.route('/')
+    @login_required
     def index():
         return render_template("index.html")
     
